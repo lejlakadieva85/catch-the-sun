@@ -1,13 +1,175 @@
-<!doctype html>
-<html lang="en">
-  <head>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>catch-the-sun</title>
-  </head>
-  <body>
-    <div id="app"></div>
+    <meta name="theme-color" content="#F5F5F5" />
+    <title>Поймать солнце — Оценка вариантов застройки</title>
+</head>
+<body>
+
+    <div class="page">
+
+
+        <main class="app">
+
+            <!-- Шапка -->
+            <header class="header">
+
+                <div class="header-top">
+
+                    <a href="#" class="logo">
+                        <span class="logo-icon">◉</span>
+                        <span>Поймать солнце</span>
+                    </a>
+
+                </div>
+
+                <!-- Навигация -->
+                <nav class="steps" aria-label="Этапы работы">
+
+                    <a href="#" class="step active" aria-current="step">
+                        <span>01</span>
+                        Данные
+                    </a>
+
+                    <a href="#" class="step">
+                        <span>02</span>
+                        Критерии и метод
+                    </a>
+
+                    <a href="#" class="step">
+                        <span>03</span>
+                        Результаты
+                    </a>
+
+                </nav>
+
+            </header>
+
+            <!-- Основное содержимое -->
+            <section class="content">
+
+                <div class="intro">
+                    <h1>Сравните варианты застройки</h1>
+
+                    <p>
+                        Добавьте технико-экономические показатели вариантов.
+                        Критерии и веса настраиваются на следующем шаге.
+                    </p>
+                </div>
+
+                <!-- Карточка исходных данных -->
+                <section class="card data-card">
+
+                    <h2>Исходные данные</h2>
+
+                    <div class="toolbar">
+
+                        <button
+                            type="button"
+                            class="button button-secondary"
+                            disabled
+                            title="Загрузка CSV будет доступна позже"
+                        >
+                            Загрузить CSV
+                        </button>
+
+                        <button
+                            type="button"
+                            class="button button-secondary"
+                            id="add-variant"
+                        >
+                            Добавить вариант
+                        </button>
+
+
+                    </div>
+
+                    <p class="example-hint">
+                        
+                    </p>
+
+                    <!-- Таблица -->
+                    <div class="table-wrapper">
+
+                        <table class="data-table">
+
+                            <thead>
+                                <tr>
+                                    <th scope="col">Вариант</th>
+                                    <th scope="col">Общая площадь, м²</th>
+                                    <th scope="col">Этажность</th>
+                                    <th scope="col">Плотность, м²/га</th>
+                                    <th scope="col">Инсоляция, ч</th>
+                                    <th scope="col" class="actions-column">
+                                        <span class="visually-hidden">Действия</span>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="variants-body">
+                                <!-- Строки добавляются через TypeScript -->
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <p class="table-hint">
+                        
+                    </p>
+
+                </section>
+
+                <!-- Проверка данных -->
+                <section class="card validation-card" aria-live="polite">
+
+                    <h2>Проверка данных перед расчётом</h2>
+
+                    <div id="validation-message" class="validation-message">
+
+                        <p>
+                            Пустая таблица → «Добавьте минимум 2 варианта для сравнения».
+                        </p>
+
+                        <p>
+                            Ошибка в ячейке → подсветить поле и показать причину рядом.
+                        </p>
+
+                        <p>
+                            Загрузка файла → показать прогресс, затем список строк с ошибками.
+                        </p>
+
+                    </div>
+
+                </section>
+
+                <!-- Футер -->
+                <footer class="footer">
+
+                    <p>
+                        Данные сохраняются при переходе между шагами.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="button button-primary"
+                        id="next-step"
+                    >
+                        К критериям
+                    </button>
+
+                </footer>
+
+            </section>
+
+        </main>
+
+    </div>
+
     <script type="module" src="/src/main.ts"></script>
-  </body>
+
+</body>
 </html>
