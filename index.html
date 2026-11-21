@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -24,6 +23,15 @@
                         <span>Поймать солнце</span>
                     </a>
 
+                    <!-- Показываются только на втором экране -->
+                    <span class="project-name" id="project-name" hidden>
+                        
+                    </span>
+
+                    <span class="version-badge" id="version-badge" hidden>
+                        
+                    </span>
+
                 </div>
 
                 <!-- Навигация -->
@@ -48,8 +56,8 @@
 
             </header>
 
-            <!-- Основное содержимое -->
-            <section class="content">
+            <!-- ========== ШАГ 1: Данные ========== -->
+            <section class="content" id="step-1">
 
                 <div class="intro">
                     <h1>Сравните варианты застройки</h1>
@@ -160,6 +168,122 @@
                     >
                         К критериям
                     </button>
+
+                </footer>
+
+            </section>
+
+            <!-- ========== ШАГ 2: Критерии и метод ========== -->
+            <section class="content" id="step-2" hidden>
+
+                <div class="intro">
+                    <h1>Настройте правила сравнения</h1>
+
+                    <p>
+                        Выберите критерии, направление предпочтения и метод оценки.
+                        Ниже показана предлагаемая настройка для обсуждения.
+                    </p>
+                </div>
+
+                <!-- Метод оценки -->
+                <section class="card">
+
+                    <h2>Метод оценки</h2>
+
+                    <div
+                        class="method-list"
+                        id="method-list"
+                        role="group"
+                        aria-label="Метод оценки"
+                    >
+                        <button type="button" class="method-button is-active" data-method="topsis">TOPSIS</button>
+                        <button type="button" class="method-button" data-method="ahp">AHP / МАИ</button>
+                        <button type="button" class="method-button" data-method="pareto">Парето</button>
+                        <button type="button" class="method-button" data-method="formulaV">Формула V</button>
+                    </div>
+
+                    <p class="method-hint">
+                        TOPSIS: близость к идеальному варианту. AHP: отдельный ввод парных сравнений.<br>
+                        Парето: слои недоминируемых решений без взвешенной суммы. Формула V: исходная методика UrbanSketch.
+                    </p>
+
+                </section>
+
+                <!-- Критерии и веса -->
+                <section class="card">
+
+                    <h2>Критерии и веса · пример</h2>
+
+                    <div class="table-wrapper">
+
+                        <table class="criteria-table">
+
+                            <thead>
+                                <tr>
+                                    <th scope="col">Критерий</th>
+                                    <th scope="col">Единица</th>
+                                    <th scope="col">Предпочтение</th>
+                                    <th scope="col">Вес</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="criteria-body">
+                                <!-- Строки добавляются через TypeScript -->
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <div class="weight-field">
+
+                        <label for="weight-input" class="weight-label">
+                            Вес выбранного критерия, %
+                        </label>
+
+                        <p class="weight-hint">
+                            Числовое поле 0–100. Сумма всех весов должна быть 100 %.
+                        </p>
+
+                        <input
+                            type="number"
+                            id="weight-input"
+                            class="weight-input"
+                            min="0"
+                            max="100"
+                            step="1"
+                            value="50"
+                        >
+
+                        <span class="sum-badge" id="sum-badge" aria-live="polite">
+                            Сумма весов: 100 %
+                        </span>
+
+                    </div>
+
+                    <p class="table-note">
+                        * Направление для плотности — допущение макета, его должен подтвердить аналитик.<br>
+                        При сумме ≠ 100 %: показать остаток и предложить нормализацию с подтверждением пользователя.
+                    </p>
+
+                </section>
+
+                <!-- Футер шага 2 -->
+                <footer class="footer">
+
+                    <p>
+                        Для AHP дополнительно проверяется согласованность парных сравнений.
+                    </p>
+
+                    <div class="footer-actions">
+                        <button type="button" class="button button-secondary" id="back-step">
+                            Назад
+                        </button>
+
+                        <button type="button" class="button button-primary" id="calculate">
+                            Рассчитать
+                        </button>
+                    </div>
 
                 </footer>
 

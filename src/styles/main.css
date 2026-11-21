@@ -1,4 +1,3 @@
-
 @import url('./variables.css');
 
 /* =========================
@@ -489,6 +488,209 @@ button:disabled {
 }
 
 /* =========================
+   Шаг 2: метод оценки
+========================= */
+
+.method-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.method-button {
+    flex: 0 0 auto;            /* не растягиваем */
+    width: auto;
+    min-height: 0;
+
+    padding: 7px 14px;
+
+    border: 1px solid #B8B8B8;
+    border-radius: 5px;
+
+    background: #F0F0F0;
+    color: var(--color-text);
+
+    font-size: 12px;
+    line-height: 1.3;
+
+    transition: var(--transition);
+}
+
+.method-button:hover {
+    background: #E5E5E5;
+}
+
+.method-button.is-active {
+    border-color: #1E1E1E;
+    background: #1E1E1E;
+    color: #FFFFFF;
+}
+
+.method-hint {
+    margin: 16px 0 0;
+
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* =========================
+   Шаг 2: таблица критериев
+========================= */
+
+.criteria-table {
+    width: 100%;
+    min-width: 560px;
+
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.criteria-table th {
+    height: 40px;
+    padding: 10px 12px;
+
+    background: var(--color-table-header);
+    color: #536666;
+
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.criteria-table th:nth-child(1) { width: 30%; }
+.criteria-table th:nth-child(2) { width: 18%; }
+.criteria-table th:nth-child(3) { width: 30%; }
+.criteria-table th:nth-child(4) { width: 22%; }
+
+.criteria-table td {
+    height: 52px;                 /* компактные строки */
+    padding: 8px 12px;
+
+    border-bottom: 1px solid var(--color-table-border);
+
+    color: #263838;
+    font-size: 12px;
+}
+
+.criteria-table tbody tr {
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.criteria-table tbody tr:hover {
+    background: #FAFBFA;
+}
+
+.criteria-table tbody tr.is-selected {
+    background: var(--color-accent-light);
+}
+
+.criteria-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================
+   Шаг 2: поле веса и бейдж
+========================= */
+
+.weight-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    margin-top: 20px;
+}
+
+.weight-label {
+    color: #253737;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.weight-hint {
+    margin: 6px 0 10px;
+
+    color: var(--color-text-muted);
+    font-size: 12px;
+}
+
+.weight-input {
+    width: 100%;
+    max-width: 340px;
+    height: 36px;
+
+    padding: 0 12px;
+
+    border: 1px solid #D9DDDC;
+    border-radius: 5px;
+
+    outline: none;
+    background: #FFFFFF;
+    color: #263838;
+
+    font-size: 13px;
+
+    transition: var(--transition);
+}
+
+.weight-input:focus {
+    border-color: var(--color-accent);
+}
+
+.weight-input.invalid {
+    border-color: var(--color-error);
+    background: var(--color-error-bg);
+}
+
+.sum-badge {
+    display: inline-flex;          /* компактный, не на всю ширину */
+    align-self: flex-start;
+
+    margin-top: 14px;
+    padding: 6px 10px;
+
+    border-radius: 3px;
+
+    background: #E8F2EC;
+    color: var(--color-success);
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.sum-badge.is-warning {
+    background: var(--color-error-bg);
+    color: var(--color-error);
+}
+
+.table-note {
+    margin: 20px 0 0;
+
+    color: var(--color-text-muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* =========================
+   Шаг 2: футер, кнопки справа
+========================= */
+
+.footer-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.footer-actions .button {
+    min-height: 34px;
+    padding: 7px 14px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+/* =========================
    Доступность
 ========================= */
 
@@ -597,6 +799,10 @@ button:disabled {
     }
 
     .footer .button {
+        align-self: flex-end;
+    }
+
+    .footer-actions {
         align-self: flex-end;
     }
 }
