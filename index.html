@@ -23,13 +23,11 @@
                         <span>Поймать солнце</span>
                     </a>
 
-                    <!-- Показываются только на втором экране -->
+                    <!-- Показываются на втором и третьем экранах -->
                     <span class="project-name" id="project-name" hidden>
-                        
                     </span>
 
                     <span class="version-badge" id="version-badge" hidden>
-                        
                     </span>
 
                 </div>
@@ -282,6 +280,138 @@
 
                         <button type="button" class="button button-primary" id="calculate">
                             Рассчитать
+                        </button>
+                    </div>
+
+                </footer>
+
+            </section>
+
+            <!-- ========== ШАГ 3: Результаты ========== -->
+            <section class="content" id="step-3" hidden>
+
+                <div class="intro">
+                    <h1>Посмотрите, почему вариант лидирует</h1>
+
+                    <p>
+                        Результаты рассчитаны по исходным данным шага 1 и весам критериев шага 2.
+                    </p>
+                </div>
+
+                <!-- Итоговый рейтинг -->
+                <section class="card">
+
+                    <span class="status-badge" id="result-badge"></span>
+
+                    <h2 class="result-title" id="result-title"></h2>
+
+                    <p class="result-note">
+                        Баллы сравниваются внутри одного метода и одного набора данных.
+                    </p>
+
+                    <div class="table-wrapper">
+
+                        <table class="result-table result-table--ranking">
+
+                            <thead>
+                                <tr>
+                                    <th scope="col">Место</th>
+                                    <th scope="col">Вариант</th>
+                                    <th scope="col" id="ranking-value-header">Близость к идеалу</th>
+                                    <th scope="col">Статус</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="ranking-body">
+                                <!-- Строки добавляются через TypeScript -->
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+                <!-- Объяснение результата -->
+                <section class="card">
+
+                    <h2>Объяснение результата</h2>
+
+                    <p class="result-note">
+                        Исходное значение и вес каждого критерия для выбранного варианта.
+                        Нажмите на строку в рейтинге, чтобы посмотреть другой вариант.
+                    </p>
+
+                    <div class="table-wrapper">
+
+                        <table class="result-table">
+
+                            <thead>
+                                <tr>
+                                    <th scope="col">Критерий</th>
+                                    <th scope="col">Вес</th>
+                                    <th scope="col" id="explanation-value-header">Исходное значение</th>
+                                    <th scope="col">Направление</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="explanation-body">
+                                <!-- Строки добавляются через TypeScript -->
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+                <!-- Сопоставление методов -->
+                <section class="card">
+
+                    <h2>Сопоставление методов</h2>
+
+                    <div class="table-wrapper">
+
+                        <table class="result-table">
+
+                            <thead>
+                                <tr>
+                                    <th scope="col">Вариант</th>
+                                    <th scope="col">TOPSIS · место</th>
+                                    <th scope="col">AHP · место</th>
+                                    <th scope="col">Парето · слой</th>
+                                    <th scope="col">V · место</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="comparison-body">
+                                <!-- Строки добавляются через TypeScript -->
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <p class="table-note">
+                        «—» означает, что метод ещё не рассчитан. Для Парето отображается слой, не условный балл.
+                    </p>
+
+                </section>
+
+                <!-- Футер шага 3 -->
+                <footer class="footer">
+
+                    <p>
+                        Изменение данных или весов требует повторного расчёта.
+                    </p>
+
+                    <div class="footer-actions">
+                        <button type="button" class="button button-secondary" id="back-to-data">
+                            К данным
+                        </button>
+
+                        <button type="button" class="button button-primary" id="to-weights">
+                            Изменить веса
                         </button>
                     </div>
 

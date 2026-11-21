@@ -1,11 +1,12 @@
+import type { MethodId, NumericField } from './math';
+import { calculateAndRender } from './step3-results';
+
 // =============================
 // Типы и данные шага 2
 // =============================
 
-type MethodId = 'topsis' | 'ahp' | 'pareto' | 'formulaV';
-
 interface Criterion {
-    id: string;
+    id: NumericField;
     name: string;
     unit: string;
     direction: 'max' | 'min';
@@ -28,6 +29,7 @@ let selectedId: string = criteria[0].id;
 
 const step1 = document.querySelector<HTMLElement>('#step-1');
 const step2 = document.querySelector<HTMLElement>('#step-2');
+const step3 = document.querySelector<HTMLElement>('#step-3');
 
 const stepLinks = document.querySelectorAll<HTMLAnchorElement>('.steps .step');
 
@@ -46,7 +48,7 @@ const backButton = document.querySelector<HTMLButtonElement>('#back-step');
 const calculateButton = document.querySelector<HTMLButtonElement>('#calculate');
 
 if (
-    !step1 || !step2 || !projectName || !versionBadge ||
+    !step1 || !step2 || !step3 || !projectName || !versionBadge ||
     !nextButton || !validationMessage ||
     !methodList || !criteriaBody || !weightInput || !sumBadge ||
     !backButton || !calculateButton
@@ -58,13 +60,14 @@ if (
 // Переключение экранов
 // =============================
 
-function showStep(step: 1 | 2): void {
+function showStep(step: 1 | 2 | 3): void {
     step1!.hidden = step !== 1;
     step2!.hidden = step !== 2;
+    step3!.hidden = step !== 3;
 
-    // Подпись проекта и бейдж в шапке — только на втором экране
-    projectName!.hidden = step !== 2;
-    versionBadge!.hidden = step !== 2;
+    // Подпись проекта и бейдж в шапке — на втором и третьем экранах
+    projectName!.hidden = step === 1;
+    versionBadge!.hidden = step === 1;
 
     stepLinks.forEach((link, index) => {
         const isActive = index === step - 1;
@@ -97,6 +100,27 @@ nextButton.addEventListener('click', () => {
 
 backButton.addEventListener('click', () => showStep(1));
 
+// Расчёт и переход на «03 Результаты»
+function requestCalculation(): void {
+
+    if (!isStep1Valid()) {
+        return;
+    }
+
+    updateSum();
+
+    // Сумма весов ≠ 100 % — показываем шаг 2 с предупреждением
+    if (sumBadge!.classList.contains('is-warning')) {
+        showStep(2);
+        return;
+    }
+
+    const isCalculated = calculateAndRender(selectedMethod, criteria);
+
+    // Данные нельзя рассчитать (например, меньше двух вариантов)
+    showStep(isCalculated ? 3 : 1);
+}
+
 stepLinks.forEach((link, index) => {
     link.addEventListener('click', (event) => {
         event.preventDefault();
@@ -105,6 +129,8 @@ stepLinks.forEach((link, index) => {
             showStep(1);
         } else if (index === 1 && isStep1Valid()) {
             showStep(2);
+        } else if (index === 2) {
+            requestCalculation();
         }
     });
 });
@@ -163,7 +189,7 @@ function getDirectionLabel(criterion: Criterion): string {
     return criterion.needsConfirm ? `${base}*` : base;
 }
 
-function renderCriteria(): void {
+function renderCriteria(focusToggleId?: string): void {
     criteriaBody!.innerHTML = '';
 
     criteria.forEach(criterion => {
@@ -173,14 +199,37 @@ function renderCriteria(): void {
         row.tabIndex = 0;
         row.classList.toggle('is-selected', criterion.id === selectedId);
 
+        // Направление — кнопка-переключатель
+        const label = getDirectionLabel(criterion);
+
+        const toggle = document.createElement('button');
+
+        toggle.type = 'button';
+        toggle.className = 'direction-toggle';
+        toggle.dataset.toggleId = criterion.id;
+        toggle.textContent = label;
+        toggle.title = 'Нажмите, чтобы переключить направление';
+        toggle.setAttribute(
+            'aria-label',
+            `Направление критерия ${criterion.name}: ${label}. Нажмите, чтобы изменить`
+        );
+
+        const directionCell = document.createElement('td');
+        directionCell.appendChild(toggle);
+
         row.append(
             createCell(criterion.name),
             createCell(criterion.unit),
-            createCell(getDirectionLabel(criterion)),
+            directionCell,
             createCell(`${criterion.weight} %`)
         );
 
         criteriaBody!.appendChild(row);
+
+        // После перерисовки возвращаем фокус на нажатую кнопку
+        if (criterion.id === focusToggleId) {
+            toggle.focus();
+        }
     });
 }
 
@@ -198,8 +247,31 @@ function selectCriterion(id: string): void {
     renderCriteria();
 }
 
+function toggleDirection(id: string): void {
+    const criterion = criteria.find(item => item.id === id);
+
+    if (!criterion) {
+        return;
+    }
+
+    criterion.direction = criterion.direction === 'max' ? 'min' : 'max';
+
+    renderCriteria(id);
+}
+
 criteriaBody.addEventListener('click', (event: MouseEvent) => {
-    const row = (event.target as HTMLElement).closest<HTMLTableRowElement>('tr');
+    const target = event.target as HTMLElement;
+
+    // Клик по направлению — переключаем его
+    const toggle = target.closest<HTMLButtonElement>('[data-toggle-id]');
+
+    if (toggle?.dataset.toggleId) {
+        toggleDirection(toggle.dataset.toggleId);
+        return;
+    }
+
+    // Клик по остальной части строки — выбираем критерий для поля веса
+    const row = target.closest<HTMLTableRowElement>('tr');
 
     if (row?.dataset.id) {
         selectCriterion(row.dataset.id);
@@ -211,7 +283,14 @@ criteriaBody.addEventListener('keydown', (event: KeyboardEvent) => {
         return;
     }
 
-    const row = (event.target as HTMLElement).closest<HTMLTableRowElement>('tr');
+    const target = event.target as HTMLElement;
+
+    // Кнопка направления обрабатывает Enter и пробел сама
+    if (target.closest('button')) {
+        return;
+    }
+
+    const row = target.closest<HTMLTableRowElement>('tr');
 
     if (row?.dataset.id) {
         event.preventDefault();
@@ -268,15 +347,7 @@ weightInput.addEventListener('input', () => {
 // Кнопка «Рассчитать»
 // =============================
 
-calculateButton.addEventListener('click', () => {
-    updateSum();
-
-    if (sumBadge.classList.contains('is-warning')) {
-        return; // сумма ≠ 100 % — расчёт не запускаем
-    }
-
-    // Здесь позднее подключается переход на «03 Результаты».
-});
+calculateButton.addEventListener('click', requestCalculation);
 
 // =============================
 // Первоначальный запуск
